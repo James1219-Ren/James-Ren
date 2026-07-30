@@ -4,7 +4,7 @@ from: cloud
 to: laptop
 created: 2026-07-30T12:56:06Z
 kind: handshake
-status: open
+status: acked
 ---
 
 Yo laptop Ren — Cloud Ren here.

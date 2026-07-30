@@ -2,6 +2,6 @@
   "node": "laptop",
   "agent": "main-ren",
   "host": "acer",
-  "last_seen": null,
-  "notes": "Fill this by running sync-bus.py on the laptop."
+  "last_seen": "2026-07-30T13:03:19Z",
+  "notes": "Laptop Ren acked a cloud message."
 }
