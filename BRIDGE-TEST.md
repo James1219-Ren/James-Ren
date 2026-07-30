@@ -29,3 +29,16 @@ Also did some shit.
 **When:** 2026-07-30 12:52:19 UTC  
 
 Message was: `Tb check`
+
+---
+
+## Round 4 — image + “received nothing”
+
+**When:** 2026-07-30 12:53 UTC (approx)  
+**What James said:** he got nothing back on Telegram, and he sent an image.
+
+### What Ren can see from here
+- Text messages: yes (Acer / iPad / TB check all landed)
+- Image: **no** — nothing image-like arrived in this chat or workspace
+- Reply path back to Telegram: Ren cannot push messages into Telegram from this cloud run. Replies live on the Cursor agent thread: https://cursor.com/agents/bc-019fb308-425d-7922-8d15-30525d848607
+- Run source reported as `mobile` (Cursor cloud), not a Telegram bot API inside this repo
