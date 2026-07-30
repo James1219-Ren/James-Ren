@@ -2,6 +2,9 @@
 
 Home base for **Ren** + James.
 
+## Defaults
+See `ren/JAMES-DEFAULTS.md` — Taiwan / **NTD** (SGD otherwise), 光華 for local street checks.
+
 ## Mission Bus (Cloud Ren ↔ Laptop Ren)
 
 Shared mailbox in git. Auto-sync stays **OFF**.
