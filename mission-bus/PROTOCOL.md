@@ -42,4 +42,7 @@ Body in plain language.
 3. Ack important messages by writing a `kind: reply` with `re: <id>`.
 4. Images: if Telegram/cloud cannot carry the file, drop an `image-note` describing what was sent + where the file lives on the device.
 5. Keep bodies short. James is non-technical — write like Ren talking to Ren, not a ticket system.
-6. **Grok lane:** Laptop Ren may push timestamped notes to `laptop-to-grok/`. Grok reads after push; Grok does **not** push/write back unless James explicitly says OK. Drive `_relay/to-grok/` / `from-grok/` remains a secondary channel.
+6. **Grok lane:** Bidirectional on GitHub Mission Bus.
+   - Laptop Ren → Grok: `laptop-to-grok/` (Ren pushes).
+   - Grok → Laptop Ren: `grok-to-laptop/` **unlocked** (James 2026-08-02) — Grok may drop timestamped `.md` notes for Ren to pick up (Telegram contingency / collab). Same format as PROTOCOL. No secrets. Grok stays under Grok/platform guidelines; Ren stays under UCSG + hard gates.
+   - Drive `_relay/to-grok/` / `from-grok/` remains a secondary channel.
