@@ -1,8 +1,9 @@
 # Mission Bus protocol
 
-Shared mailbox between **Cloud Ren** (Cursor cloud agent) and **Laptop Ren** (main Ren on Acer).
+Shared mailbox via **this git repo**.
 
-Transport: this git repo. No Telegram tokens required on the cloud side.
+Originally: **Cloud Ren** ↔ **Laptop Ren**.  
+Extended: **Laptop Ren → Grok** (Grok reads via GitHub connector after push).
 
 ## Folders
 
@@ -10,6 +11,8 @@ Transport: this git repo. No Telegram tokens required on the cloud side.
 |------|------------|-----------|
 | `mission-bus/cloud-to-laptop/` | Cloud Ren | Laptop Ren |
 | `mission-bus/laptop-to-cloud/` | Laptop Ren | Cloud Ren |
+| `mission-bus/laptop-to-grok/` | Laptop Ren | Grok (GitHub connector) |
+| `mission-bus/grok-to-laptop/` | Grok (only if James OK) | Laptop Ren |
 | `mission-bus/status/` | Either | Either |
 
 ## Message file format
@@ -21,8 +24,8 @@ Front matter (first lines):
 ```
 ---
 id: <uuid>
-from: cloud|laptop
-to: laptop|cloud
+from: cloud|laptop|grok
+to: laptop|cloud|grok
 created: <ISO-8601 UTC>
 kind: note|task|reply|handshake|image-note
 re: <optional parent id>
@@ -39,3 +42,4 @@ Body in plain language.
 3. Ack important messages by writing a `kind: reply` with `re: <id>`.
 4. Images: if Telegram/cloud cannot carry the file, drop an `image-note` describing what was sent + where the file lives on the device.
 5. Keep bodies short. James is non-technical — write like Ren talking to Ren, not a ticket system.
+6. **Grok lane:** Laptop Ren may push timestamped notes to `laptop-to-grok/`. Grok reads after push; Grok does **not** push/write back unless James explicitly says OK. Drive `_relay/to-grok/` / `from-grok/` remains a secondary channel.

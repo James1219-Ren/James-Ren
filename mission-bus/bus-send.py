@@ -28,8 +28,8 @@ def stamp() -> str:
 
 def main() -> None:
     p = argparse.ArgumentParser()
-    p.add_argument("--from", dest="frm", required=True, choices=["cloud", "laptop"])
-    p.add_argument("--to", dest="to", required=True, choices=["cloud", "laptop"])
+    p.add_argument("--from", dest="frm", required=True, choices=["cloud", "laptop", "grok"])
+    p.add_argument("--to", dest="to", required=True, choices=["cloud", "laptop", "grok"])
     p.add_argument("--kind", default="note")
     p.add_argument("--re", dest="re_id", default=None)
     p.add_argument("--status", default="open")
@@ -39,12 +39,15 @@ def main() -> None:
     if not body:
         raise SystemExit("body required")
 
-    if args.frm == "cloud" and args.to == "laptop":
-        folder = BUS / "cloud-to-laptop"
-    elif args.frm == "laptop" and args.to == "cloud":
-        folder = BUS / "laptop-to-cloud"
-    else:
-        raise SystemExit("only cloud↔laptop lanes are defined")
+    lanes = {
+        ("cloud", "laptop"): BUS / "cloud-to-laptop",
+        ("laptop", "cloud"): BUS / "laptop-to-cloud",
+        ("laptop", "grok"): BUS / "laptop-to-grok",
+        ("grok", "laptop"): BUS / "grok-to-laptop",
+    }
+    folder = lanes.get((args.frm, args.to))
+    if folder is None:
+        raise SystemExit("unsupported lane — use cloud↔laptop or laptop↔grok")
 
     folder.mkdir(parents=True, exist_ok=True)
     msg_id = str(uuid.uuid4())
