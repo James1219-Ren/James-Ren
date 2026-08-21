@@ -1,0 +1,54 @@
+name: Build Invisible Keyboard
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "projects/invisible-keyboard/**"
+      - ".github/workflows/build-invisible-keyboard.yml"
+
+jobs:
+  build-unsigned-ipa:
+    runs-on: macos-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate Xcode project
+        working-directory: projects/invisible-keyboard/InvisibleKeyboard
+        run: xcodegen generate
+
+      - name: Build without code signing
+        working-directory: projects/invisible-keyboard/InvisibleKeyboard
+        run: |
+          xcodebuild \
+            -project InvisibleKeyboard.xcodeproj \
+            -scheme InvisibleKeyboard \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build
+
+      - name: Package unsigned IPA
+        working-directory: projects/invisible-keyboard/InvisibleKeyboard
+        run: |
+          APP_PATH="build/Build/Products/Release-iphoneos/InvisibleKeyboard.app"
+          test -d "$APP_PATH"
+          mkdir -p Payload
+          cp -R "$APP_PATH" Payload/
+          ditto -c -k --sequesterRsrc --keepParent Payload InvisibleKeyboard-unsigned.ipa
+
+      - name: Upload unsigned IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: InvisibleKeyboard-unsigned-ipa
+          path: projects/invisible-keyboard/InvisibleKeyboard/InvisibleKeyboard-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 14
